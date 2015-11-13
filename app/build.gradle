@@ -1,0 +1,56 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.1'
+
+    defaultConfig {
+        minSdkVersion 3
+        targetSdkVersion 23
+        versionCode 27
+        versionName '1.0'
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('../../android.keystore')
+            keyAlias 'tananaev'
+            storePassword ''
+            keyPassword ''
+        }
+    }
+
+    productFlavors {
+        regular {
+            applicationId "org.traccar.client"
+            buildConfigField "boolean", "HIDDEN_APP", "false"
+        }
+        hidden {
+            applicationId "org.traccar.client.hidden"
+            buildConfigField "boolean", "HIDDEN_APP", "true"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.0'
+}
+
+task requestPasswords << {
+    android.signingConfigs.release.storePassword = new String(System.console().readPassword('\nStore password: '))
+    android.signingConfigs.release.keyPassword = new String(System.console().readPassword('Key password: '))
+}
+
+tasks.whenTaskAdded { theTask ->
+    if (theTask.name.equals('packageRegularRelease') || theTask.name.equals('packageHiddenRelease')) {
+        theTask.dependsOn 'requestPasswords'
+    }
+}

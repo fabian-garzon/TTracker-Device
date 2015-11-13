@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ttracker.client">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/android_icon"
+        android:label="@string/app_name"
+        android:theme="@style/TraccarTheme">
+
+        <activity android:name="com.ttracker.client.MainActivity" android:launchMode="singleTask" />
+
+        <activity-alias
+            android:name=".Launcher"
+            android:targetActivity="com.ttracker.client.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity android:name="com.ttracker.client.StatusActivity"/>
+
+        <activity android:name="com.ttracker.client.AboutActivity"/>
+
+        <service android:name="com.ttracker.client.TrackingService" />
+
+        <service android:name="com.ttracker.client.TrackingService$HideNotificationService" />
+
+        <receiver android:name="com.ttracker.client.AutostartReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>
